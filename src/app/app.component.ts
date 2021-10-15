@@ -1,6 +1,8 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { User } from './_models/User';
+import { AccountsService } from './_services/accounts.service';
 
 
 @Component({
@@ -12,17 +14,17 @@ export class AppComponent implements OnInit {
   title = 'datingAppUI';
   users :any;
 
-  constructor( private http:HttpClient){}
+  constructor(private accountService:AccountsService){}
 
   ngOnInit(){
-   this.getUsers();
+  
+   this.setCurrentUser();
   }
 
-  getUsers(){
-    this.http.post("https://localhost:44316/api/Users/GetUsers",null).subscribe(res=>{
-      this.users=res;
-    },error=>{
-      console.log(error);
-    })
-  }
+setCurrentUser(){
+  const user:User=JSON.parse(localStorage.getItem('user'));
+  this.accountService.setCurrentUser(user);
+}
+
+ 
 }
